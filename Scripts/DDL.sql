@@ -21,6 +21,13 @@ CREATE TABLE Pedido(
     FOREIGN KEY (id_estado) REFERENCES Estado(id_estado) 
 );
 
+CREATE TABLE Pizza(
+id_pizza INT PRIMARY KEY, 
+nombre VARCHAR(100) NOT NULL,
+precio DECIMAL(5,2) NOT NULL
+);
+
+
 CREATE TABLE Ingrediente(
     id_ingrediente bigint PRIMARY KEY,
     nombre varchar(100) NOT NULL,
