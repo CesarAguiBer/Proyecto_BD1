@@ -27,3 +27,12 @@ CREATE TABLE Ingrediente(
     precio decimal(20,2) NOT NULL,
     stock int NOT NULL
 );
+
+CREATE TABLE PizzaIngrediente(
+    id_pizza  int NOT NULL,
+    id_ingrediente bigint NOT NULL,
+    cantidad int NOT NULL,
+    FOREIGN KEY(id_pizza) REFERENCES Pizza(id_pizza),
+    FOREIGN KEY(id_ingrediente) REFERENCES  Ingrediente(id_ingrediente),
+    PRIMARY KEY(id_pizza,id_ingrediente)    
+);
