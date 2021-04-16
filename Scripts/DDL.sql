@@ -20,3 +20,10 @@ CREATE TABLE Pedido(
     FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
     FOREIGN KEY (id_estado) REFERENCES Estado(id_estado) 
 );
+
+CREATE TABLE Ingrediente(
+    id_ingrediente bigint PRIMARY KEY,
+    nombre varchar(100) NOT NULL,
+    precio decimal(20,2) NOT NULL,
+    stock int NOT NULL
+);
