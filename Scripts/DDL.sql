@@ -27,6 +27,14 @@ nombre VARCHAR(100) NOT NULL,
 precio DECIMAL(5,2) NOT NULL
 );
 
+CREATE TABLE PedidoPizza(
+id_pizza INT,
+id_pedido BIGINT,
+cantidad INT NOT NULL,
+FOREIGN KEY (id_pizza) REFERENCES Pizza(id_pizza),
+FOREIGN KEY (id_pedido) references Pedido(id_pedido),
+PRIMARY KEY(id_pedido, id_pizza)
+);
 
 CREATE TABLE Ingrediente(
     id_ingrediente bigint PRIMARY KEY,
