@@ -22,18 +22,18 @@ CREATE TABLE Pedido(
 );
 
 CREATE TABLE Pizza(
-id_pizza INT PRIMARY KEY, 
-nombre VARCHAR(100) NOT NULL,
-precio DECIMAL(5,2) NOT NULL
+    id_pizza int PRIMARY KEY, 
+    nombre varchar(100) NOT NULL,
+    precio decimal(20,2) NOT NULL
 );
 
 CREATE TABLE PedidoPizza(
-id_pizza INT,
-id_pedido BIGINT,
-cantidad INT NOT NULL,
-FOREIGN KEY (id_pizza) REFERENCES Pizza(id_pizza),
-FOREIGN KEY (id_pedido) references Pedido(id_pedido),
-PRIMARY KEY(id_pedido, id_pizza)
+    id_pedido bigint NOT NULL,
+    id_pizza int NOT NULL,
+    cantidad int NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
+    FOREIGN KEY (id_pizza) REFERENCES Pizza(id_pizza),
+    PRIMARY KEY(id_pedido, id_pizza)
 );
 
 CREATE TABLE Ingrediente(
