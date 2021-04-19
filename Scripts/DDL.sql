@@ -66,4 +66,7 @@ CREATE TABLE OrdenEntrega(
     FOREIGN KEY (id_pago) REFERENCES TipoPago(id_pago)  
 );
 
-
+CREATE TABLE TipoPago(
+    id_pago bigint PRIMARY KEY,
+    descripcion varchar(100)
+);
