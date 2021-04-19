@@ -1,5 +1,5 @@
 CREATE TABLE Cliente(
-    id_cliente bigint PRIMARY KEY,
+    id_cliente varchar(20) PRIMARY KEY,
     nombre varchar(100) NOT NULL,
     apellido varchar(100) NOT NULL,
     correo varchar(100) NOT NULL,
@@ -8,36 +8,36 @@ CREATE TABLE Cliente(
 );
 
 CREATE TABLE Empleado(
-    id_empleado nvarchar(20) PRIMARY KEY,
-    nombre varchar(100) NOT NULL,
+    id_empleado varchar(20) PRIMARY KEY,
+    nombre  varchar(100) NOT NULL,
     apellido varchar(100) NOT NULL,
     correo varchar(100) NOT NULL,
     telefono varchar(100) NOT NULL
 );
 
 CREATE TABLE Estado(
-    id_estado int PRIMARY KEY,
+    id_estado varchar(20) PRIMARY KEY,
     descripcion varchar(100)
 );
 
 CREATE TABLE Pedido(
-    id_pedido bigint PRIMARY KEY,
-    id_cliente bigint NOT NULL,
-    id_estado int NOT NULL,
-    fecha_creacion timestamp DEFAULT NOW(),
+    id_pedido bigint AUTO_INCREMENT PRIMARY KEY,
+    id_cliente varchar(20) NOT NULL,
+    id_estado varchar(20) NOT NULL,
+    fecha_creacion datetime DEFAULT NOW(),
     FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
     FOREIGN KEY (id_estado) REFERENCES Estado(id_estado) 
 );
 
 CREATE TABLE Pizza(
-    id_pizza int PRIMARY KEY, 
+    id_pizza varchar(20) PRIMARY KEY, 
     nombre varchar(100) NOT NULL,
     precio decimal(20,2) NOT NULL
 );
 
 CREATE TABLE PedidoPizza(
     id_pedido bigint NOT NULL,
-    id_pizza int NOT NULL,
+    id_pizza varchar(20) NOT NULL,
     cantidad int NOT NULL,
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
     FOREIGN KEY (id_pizza) REFERENCES Pizza(id_pizza),
@@ -45,15 +45,15 @@ CREATE TABLE PedidoPizza(
 );
 
 CREATE TABLE Ingrediente(
-    id_ingrediente bigint PRIMARY KEY,
+    id_ingrediente varchar(20) PRIMARY KEY,
     nombre varchar(100) NOT NULL,
     precio decimal(20,2) NOT NULL,
     stock int NOT NULL
 );
 
 CREATE TABLE PizzaIngrediente(
-    id_pizza  int NOT NULL,
-    id_ingrediente bigint NOT NULL,
+    id_pizza varchar(20) NOT NULL,
+    id_ingrediente varchar(20) NOT NULL,
     cantidad int NOT NULL,
     FOREIGN KEY(id_pizza) REFERENCES Pizza(id_pizza),
     FOREIGN KEY(id_ingrediente) REFERENCES  Ingrediente(id_ingrediente),
@@ -61,19 +61,19 @@ CREATE TABLE PizzaIngrediente(
 );
 
 CREATE TABLE TipoPago(
-    id_pago bigint PRIMARY KEY,
+    id_pago varchar(20) PRIMARY KEY,
     descripcion varchar(100)
 );
 
 CREATE TABLE OrdenEntrega(
-    id_orden bigint PRIMARY KEY,
+    id_orden bigint AUTO_INCREMENT PRIMARY KEY,
     id_pedido bigint NOT NULL,
-    id_empleado bigint NOT NULL,
-    id_pago bigint NOT NULL, 
+    id_empleado varchar(20) NOT NULL,
+    id_pago varchar(20) NOT NULL, 
     valor_pedido decimal(20,2) NOT NULL, 
     costo_entrega decimal(20,2) NOT NULL,  
-    fecha_creacion datetime NOT NULL, 
-    fecha_entrega datetime NOT NULL,
+    fecha_creacion datetime DEFAULT NOW(), 
+    fecha_entrega date DEFAULT CURDATE(),
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
     FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
     FOREIGN KEY (id_pago) REFERENCES TipoPago(id_pago)  
