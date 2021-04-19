@@ -6,6 +6,7 @@ CREATE TABLE Cliente(
     telefono varchar(100) NOT NULL,
     direccion varchar(100) NOT NULL
 );
+
 CREATE TABLE Empleado(
     id_empleado nvarchar(20) PRIMARY KEY,
     nombre varchar(100) NOT NULL,
@@ -59,6 +60,11 @@ CREATE TABLE PizzaIngrediente(
     PRIMARY KEY(id_pizza,id_ingrediente)    
 );
 
+CREATE TABLE TipoPago(
+    id_pago bigint PRIMARY KEY,
+    descripcion varchar(100)
+);
+
 CREATE TABLE OrdenEntrega(
     id_orden bigint PRIMARY KEY,
     id_pedido bigint NOT NULL,
@@ -73,7 +79,10 @@ CREATE TABLE OrdenEntrega(
     FOREIGN KEY (id_pago) REFERENCES TipoPago(id_pago)  
 );
 
-CREATE TABLE TipoPago(
-    id_pago bigint PRIMARY KEY,
-    descripcion varchar(100)
+CREATE TABLE PagoEfectivo(
+    id_orden bigint NOT NULL,
+    monto_pagado decimal(20,2) NOT NULL,
+    cambio decimal(20,2) NOT NULL,
+    FOREIGN KEY (id_orden) REFERENCES OrdenEntrega(id_orden),
+    PRIMARY KEY (id_orden)
 );
