@@ -3,8 +3,8 @@ CREATE TABLE Cliente(
     nombre varchar(100) NOT NULL,
     apellido varchar(100) NOT NULL,
     correo varchar(100) NOT NULL,
-    telefono varchar(100) NOT NULL,
-    direccion varchar(100) NOT NULL
+    teléfono varchar(100) NOT NULL,
+    dirección varchar(100) NOT NULL
 );
 
 CREATE TABLE Empleado(
@@ -12,19 +12,19 @@ CREATE TABLE Empleado(
     nombre  varchar(100) NOT NULL,
     apellido varchar(100) NOT NULL,
     correo varchar(100) NOT NULL,
-    telefono varchar(100) NOT NULL
+    teléfono varchar(100) NOT NULL
 );
 
 CREATE TABLE Estado(
     id_estado varchar(20) PRIMARY KEY,
-    descripcion varchar(100)
+    descripción varchar(100)
 );
 
 CREATE TABLE Pedido(
     id_pedido bigint AUTO_INCREMENT PRIMARY KEY,
     id_cliente varchar(20) NOT NULL,
     id_estado varchar(20) NOT NULL,
-    fecha_creacion datetime DEFAULT NOW(),
+    fecha_creación datetime DEFAULT NOW(),
     FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
     FOREIGN KEY (id_estado) REFERENCES Estado(id_estado) 
 );
@@ -62,7 +62,7 @@ CREATE TABLE PizzaIngrediente(
 
 CREATE TABLE TipoPago(
     id_pago varchar(20) PRIMARY KEY,
-    descripcion varchar(100)
+    descripción varchar(100)
 );
 
 CREATE TABLE OrdenEntrega(
@@ -72,7 +72,7 @@ CREATE TABLE OrdenEntrega(
     id_pago varchar(20) NOT NULL, 
     valor_pedido decimal(20,2) NOT NULL, 
     costo_entrega decimal(20,2) NOT NULL,  
-    fecha_creacion datetime DEFAULT NOW(), 
+    fecha_creación datetime DEFAULT NOW(), 
     fecha_entrega date NOT NULL,
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
     FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
