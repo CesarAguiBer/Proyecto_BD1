@@ -73,7 +73,7 @@ CREATE TABLE OrdenEntrega(
     valor_pedido decimal(20,2) NOT NULL, 
     costo_entrega decimal(20,2) NOT NULL,  
     fecha_creación datetime DEFAULT NOW(), 
-    fecha_entrega date NOT NULL,
+    fecha_entrega datetime NOT NULL,
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
     FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
     FOREIGN KEY (id_pago) REFERENCES TipoPago(id_pago)  
