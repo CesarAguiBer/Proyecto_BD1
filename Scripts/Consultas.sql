@@ -1,3 +1,21 @@
+# 1. En el último mes, cuales el top 3 de los clientes con mayor número de pedidos. 
+
+SELECT
+	c.nombre AS 'Nombre del Cliente',
+    c.teléfono AS 'Número de teléfono',
+    YEAR(p.fecha_creación) AS 'Año',
+    MONTH(p.fecha_creación) AS 'Mes',
+    COUNT(*) AS 'Conteo de Pedidos'
+FROM 
+	pizzeriadb.Cliente AS c 
+    JOIN pizzeriadb.Pedido AS p ON c.id_cliente = p.id_cliente
+GROUP BY 
+	c.nombre, c.teléfono, YEAR(p.fecha_creación), MONTH(p.fecha_creación)
+ORDER BY  
+	YEAR(p.fecha_creación) DESC, MONTH(p.fecha_creación) DESC, COUNT(*) DESC
+LIMIT 3
+;
+
 # 6. Distribución de tipo de pago por cliente (usando toda la historia).alter
 
 WITH 
@@ -30,7 +48,6 @@ FROM
     LEFT JOIN tmp2 ON c.id_cliente = tmp2.id_cliente
 GROUP BY c.id_cliente, 'Porcentaje de pagos usando efectivo', 'Porcentaje de pagos usando usando otros métodos de pago'
 ;
-		
 
 # 7. Promedio de cambio utilizado mes a mes en el último año
 
@@ -48,3 +65,4 @@ GROUP BY
 ORDER BY
 	YEAR(o.fecha_entrega) DESC, MONTH(o.fecha_entrega) DESC
 ;
+
