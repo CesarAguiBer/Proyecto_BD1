@@ -30,3 +30,21 @@ FROM
     LEFT JOIN tmp2 ON c.id_cliente = tmp2.id_cliente
 GROUP BY c.id_cliente, 'Porcentaje de pagos usando efectivo', 'Porcentaje de pagos usando usando otros métodos de pago'
 ;
+		
+
+# 7. Promedio de cambio utilizado mes a mes en el último año
+
+SELECT 
+	YEAR(o.fecha_entrega) AS 'Año',
+    MONTH(o.fecha_entrega) AS 'Mes',
+    CAST(SUM(cambio) / COUNT(*) AS decimal(20,2)) AS 'Promedio de cambio entregado'
+FROM 
+	pizzeriadb.OrdenEntrega AS o
+    JOIN pizzeriadb.PagoEfectivo AS pe ON o.id_orden = pe.id_orden
+WHERE 
+	YEAR(o.fecha_entrega) = '2021'
+GROUP BY 
+	YEAR(o.fecha_entrega), MONTH(o.fecha_entrega)
+ORDER BY
+	YEAR(o.fecha_entrega) DESC, MONTH(o.fecha_entrega) DESC
+;
