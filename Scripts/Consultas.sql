@@ -16,6 +16,26 @@ ORDER BY
 LIMIT 3
 ;
 
+# 5. Top 5 de los clientes que mas han esperado en recibir sus órdenes (usando toda la historia)
+
+SELECT 
+	c.id_cliente AS 'ID Cliente', 
+    c.nombre AS 'Nombre', 
+    c.teléfono AS 'Teléfono', 
+    c.dirección AS 'Dirección',
+    COUNT(*) AS 'Número de pedidos hechos',
+    SUM(TIMESTAMPDIFF(HOUR, p.fecha_creación, o.fecha_entrega)) AS 'Suma del tiempo esperado'
+FROM 
+	pizzeriadb.Cliente AS c 
+    JOIN pizzeriadb.Pedido AS p ON c.id_cliente = p.id_cliente
+    JOIN pizzeriadb.OrdenEntrega AS o ON o.id_pedido = p.id_pedido
+GROUP BY 
+	c.id_cliente, c.nombre, c.teléfono, c.dirección
+ORDER BY
+	SUM(TIMESTAMPDIFF(HOUR, p.fecha_creación, o.fecha_entrega)) DESC
+LIMIT 5
+; 
+
 # 6. Distribución de tipo de pago por cliente (usando toda la historia).alter
 
 WITH 
