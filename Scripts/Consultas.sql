@@ -16,6 +16,24 @@ ORDER BY
 LIMIT 3
 ;
 
+# 2. En el último año, cual ha sido el vendedor con más ventas realizadas
+SELECT 
+	e.nombre AS 'Nombre del Vendedor',
+    e.id_empleado AS 'Número de Empleado',
+    YEAR(o.fecha_creación) AS 'Año',
+    COUNT(*) AS 'Conteo de pedidos realizados',
+    SUM(o.valor_pedido + o.costo_entrega) AS 'Suma de Ventas'
+FROM 
+	pizzeriadb.Empleado AS e 
+    JOIN pizzeriadb.OrdenEntrega AS o ON e.id_empleado = o.id_empleado 
+GROUP BY 
+	e.nombre, e.id_empleado, YEAR(o.fecha_creación)
+ORDER BY 
+	YEAR(o.fecha_creación) DESC, SUM(o.valor_pedido + o.costo_entrega) DESC
+LIMIT 1
+;
+
+
 # 5. Top 5 de los clientes que mas han esperado en recibir sus órdenes (usando toda la historia)
 
 SELECT 
