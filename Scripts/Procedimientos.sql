@@ -49,3 +49,30 @@ DELIMITER ;
 
 # CALL pizzeriadb.sp_generar_orden(201,'1','2',120.00,20.00);
 
+																		   
+# 6. Actualizar la orden una vez ha sido entregada. (considera el caso en el que no se sabe si el cliente pagara con efectivo o no)
+
+DELIMITER $$
+CREATE PROCEDURE pizzeriadb.sp_actualizar_entrega
+(IN sp_id_pedido bigint)
+BEGIN
+	DECLARE existe int DEFAULT(SELECT COUNT(*) FROM pizzeriadb.Pedido AS p WHERE p.id_pedido = sp_id_pedido);
+    DECLARE estado varchar(20) DEFAULT(SELECT p.id_estado FROM pizzeriadb.Pedido AS p WHERE p.id_pedido = sp_id_pedido);
+    
+    IF existe > 0 THEN
+		IF estado = '3' THEN
+			UPDATE pizzeriadb.Pedido AS p SET p.id_estado = '4' WHERE p.id_pedido = sp_id_pedido;
+            UPDATE pizzeriadb.OrdenEntrega AS o SET o.fecha_entrega = NOW() WHERE o.id_pedido = sp_id_pedido;
+            SELECT 1 AS Successed, 'Se actualizó el pedido correctamente' AS MSG;
+        ELSE
+			SELECT 0 AS Successed, 'No se puede actualizar el pedido' AS MSG;
+        END IF;
+    ELSE
+		SELECT 0 AS Successed, 'El ID de pedido no existe' AS MSG;
+    END IF;
+END$$
+DELIMITER ;
+
+# CALL pizzeriadb.sp_actualizar_entrega(3);																		   
+																		   
+																		  
