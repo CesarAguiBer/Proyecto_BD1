@@ -33,6 +33,17 @@ ORDER BY
 LIMIT 1
 ;
 
+# 4. Cantidad de ingredientes por pizza 
+
+SELECT 
+	p.nombre AS Pizza,
+    COUNT(p.id_pizza) AS 'Cantidad de Ingredientes',
+    p.precio AS 'Precio Pizza'
+FROM 
+	pizzeriadb.Pizza AS p 
+    JOIN pizzeriadb.PizzaIngrediente AS pi ON p.id_pizza = pi.id_pizza
+GROUP BY p.nombre, p.precio
+; 
 
 # 5. Top 5 de los clientes que mas han esperado en recibir sus órdenes (usando toda la historia)
 
