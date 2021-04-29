@@ -1,3 +1,20 @@
+# 1. Crear una pizza
+DELIMITER $$
+CREATE PROCEDURE pizzeriadb.sp_crear_pizza
+(IN sp_id_pizza varchar(20), IN sp_nombre varchar(100), IN sp_precio decimal(20,2))
+BEGIN
+	DECLARE existe int DEFAULT (SELECT COUNT(*) FROM pizzeriadb.Pizza AS p WHERE p.id_pizza = sp_id_pizza);
+    
+    IF existe > 0 THEN
+		SELECT 0 AS Successed, 'El ID enviado ya existe' AS MSG;
+    ELSE
+		INSERT INTO pizzeriadb.Pizza VALUES(sp_id_pizza, sp_nombre, sp_precio);
+		SELECT 1 AS Successed, 'Tu registro fue almacenado' AS MSG;
+	END IF;
+END$$
+DELIMITER ;
+# CALL pizzeriadb.sp_crear_pizza ('1', 'Pizza con Piña', 200.00 );
+
 # 2. Agregar ingrediente a una pizza
 
 DELIMITER $$
