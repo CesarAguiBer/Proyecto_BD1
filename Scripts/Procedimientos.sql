@@ -75,4 +75,23 @@ DELIMITER ;
 
 # CALL pizzeriadb.sp_actualizar_entrega(3);																		   
 																		   
+# 7. Agregar un nuevo cliente
+
+DELIMITER $$
+CREATE PROCEDURE pizzeriadb.sp_agregar_cliente
+(IN sp_id_cliente varchar(20), IN sp_nombre varchar(100), IN sp_apellido varchar(100), IN sp_correo varchar(100), IN sp_telefono varchar(100), IN sp_direccion varchar(100))
+BEGIN
+	DECLARE existe int DEFAULT (SELECT COUNT(*) FROM pizzeriadb.Cliente AS c WHERE c.id_cliente = sp_id_cliente);
+    
+    IF existe > 0 THEN
+		SELECT 0 AS Successed, 'El ID enviado ya existe' AS MSG;
+    ELSE
+		INSERT INTO pizzeriadb.Cliente VALUES(sp_id_cliente, sp_nombre, sp_apellido, sp_correo, sp_telefono, sp_direccion);
+		SELECT 1 AS Successed, 'Tu registro fue almacenado' AS MSG;
+	END IF;
+END $$
+DELIMITER ;
+
+# CALL pizzeriadb.sp_agregar_cliente ('1', 'Juan', 'Pérez', 'juan.perez@gmail.com', '9999-9999', 'Col. Altamira');
+
 																		  
