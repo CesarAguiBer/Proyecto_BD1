@@ -33,6 +33,41 @@ ORDER BY
 LIMIT 1
 ;
 
+# 3. Para el ingrediente más utilizado en el ultimo año cual ha sido su porcentaje de incremento o descrecimiento mes a mes.
+
+WITH tmp1(nombre, año, total) AS (
+	SELECT 
+		i.nombre, YEAR(p.fecha_creación), SUM(pi.cantidad * pp.cantidad)
+	FROM 
+        pizzeriadb.Ingrediente AS i 
+        JOIN pizzeriadb.PizzaIngrediente AS pi ON i.id_ingrediente = pi.id_ingrediente
+        JOIN pizzeriadb.PedidoPizza AS pp ON pp.id_pizza = pi.id_pizza
+        JOIN pizzeriadb.Pedido AS p ON p.id_pedido = pp.id_pedido
+	GROUP BY i.nombre, YEAR(p.fecha_creación)
+	ORDER BY YEAR(p.fecha_creación) DESC, SUM(pi.cantidad * pp.cantidad) DESC
+	LIMIT 1
+)
+
+SELECT 
+	i.nombre AS 'Ingrediente', 
+    YEAR(p.fecha_creación) AS 'Año', 
+    MONTH(fecha_creación) AS 'Mes',
+	SUM(pi.cantidad * pp.cantidad) AS 'Total'
+FROM 
+	pizzeriadb.Ingrediente AS i 
+	JOIN pizzeriadb.PizzaIngrediente AS pi ON i.id_ingrediente = pi.id_ingrediente
+	JOIN pizzeriadb.PedidoPizza AS pp ON pp.id_pizza = pi.id_pizza
+	JOIN pizzeriadb.Pedido AS p ON p.id_pedido = pp.id_pedido
+WHERE 
+	i.nombre = (SELECT tmp1.nombre FROM tmp1) AND YEAR(p.fecha_creación) = (SELECT tmp1.año FROM tmp1)
+GROUP BY 
+	i.nombre, 
+    YEAR(p.fecha_creación), 
+    MONTH(fecha_creación)
+ORDER BY 
+	YEAR(p.fecha_creación) DESC, MONTH(fecha_creación) ASC
+;
+
 # 4. Cantidad de ingredientes por pizza 
 
 SELECT 
@@ -114,4 +149,3 @@ GROUP BY
 ORDER BY
 	YEAR(o.fecha_entrega) DESC, MONTH(o.fecha_entrega) DESC
 ;
-

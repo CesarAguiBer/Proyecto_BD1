@@ -89,6 +89,54 @@ DELIMITER ;
 
 # CALL pizzeriadb.sp_aprobar_pedido(20);
 
+# 4. Cancelar una orden ya aprobada. 
+
+DELIMITER $$
+CREATE PROCEDURE pizzeriadb.sp_cancelar_pedido
+(IN sp_id_pedido bigint)
+BEGIN
+	DECLARE existe int DEFAULT(SELECT COUNT(*) FROM pizzeriadb.Pedido AS p WHERE p.id_pedido = sp_id_pedido);
+    DECLARE estado varchar(20) DEFAULT(SELECT p.id_estado FROM pizzeriadb.Pedido AS p WHERE p.id_pedido = sp_id_pedido);
+    
+     IF existe > 0 THEN
+		IF estado = '2' THEN
+			
+            UPDATE pizzeriadb.Pedido AS p SET p.id_estado = '5' WHERE p.id_pedido = sp_id_pedido;
+            
+            WITH tmp1 AS(
+				SELECT 
+					p.id_pedido AS 'pedido', 
+                    pp.id_pizza AS 'pizza', 
+                    pp.cantidad AS 'pizzas_ordenadas' , 
+                    pi.cantidad AS 'cantidad_ingrediente_Pizza' , 
+					pi.id_ingrediente AS 'ingrediente'
+				FROM 
+					pizzeriadb.Pedido AS p 
+					JOIN pizzeriadb.PedidoPizza AS pp ON p.id_pedido = pp.id_pedido
+					JOIN pizzeriadb.PizzaIngrediente AS pi ON pi.id_pizza = pp.id_pizza
+					WHERE p.id_pedido = sp_id_pedido
+            ) 
+            
+            UPDATE 
+				tmp1 
+                JOIN Ingrediente AS i ON i.id_ingrediente = tmp1.ingrediente 
+			SET 
+				i.stock = i.stock + (tmp1.pizzas_ordenadas * tmp1.cantidad_ingrediente_pizza)
+            ;
+            
+            SELECT 1 AS Successed, 'El pedido ha sido cancelado con éxito' AS MSG;
+        ELSE
+			SELECT 0 AS Successed, 'No se puede actualizar el pedido' AS MSG;
+        END IF;
+    ELSE
+		SELECT 0 AS Successed, 'El ID de pedido no existe' AS MSG;
+    END IF;
+    
+END$$
+DELIMITER ;
+
+# CALL pizzeriadb.sp_cancelar_pedido(3);
+
 # 5. Convertir una orden a Orden Entrega.
 
 DELIMITER $$
